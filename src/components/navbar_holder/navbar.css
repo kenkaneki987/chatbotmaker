@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #0f0f0f;
+    color: #d4ffd4;
+  }
+  
+  .Navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    padding: 20px;
+    border-bottom: 2px solid #00ff84;
+    gap: 20px;
+  }
+  
+  .Navbar h1 {
+    color: #00ff84;
+    font-size: 2rem;
+    margin-right: auto;
+  }
+  
+  .Navbar a {
+    color: #d4ffd4;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: 0.3s ease;
+  }
+  
+  .Navbar a:hover {
+    background-color: #00ff84;
+    color: #000;
+  }
+  
+  .Navbar button {
+    background-color: #00ff84;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .Navbar button:hover {
+    background-color: #00cc6a;
+  }
+  
+
+  form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #00ff84;
+  }
+  
+  form input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #00ff84;
+    background-color: #000;
+    color: #d4ffd4;
+    border-radius: 5px;
+  }
+  
+  form button {
+    background-color: #00ff84;
+    color: #000;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #00cc6a;
+  }
+  
+  @media (max-width: 600px) {
+    .Navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .Navbar h1 {
+      margin-bottom: 10px;
+    }
+  
+    form {
+      width: 90%;
+    }
+  }
+h1{
+    text-align: center;
+}
+a{
+  color: #00ff84;
+}
