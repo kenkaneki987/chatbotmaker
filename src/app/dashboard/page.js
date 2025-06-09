@@ -3,6 +3,8 @@ import React, { useContext, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AuthContext } from '@/context/auth'
 import './dashboard.css'
+import { createChatbot } from '@/services/chatbot'
+import { getToken } from '@/helpers/auth'
 const Dashboard = () => {
     const router = useRouter()
     const { isLoggedIn, logout } = useContext(AuthContext)
@@ -17,7 +19,7 @@ const Dashboard = () => {
             [e.target.name]: e.target.value
         })
     }
-    const handleCreateChatbot = () => {
+    const handleCreateChatbot = async () => {
         if (!formData.name.trim() || !formData.context.trim()) {
             alert('Please fill in all fields')
             return
@@ -28,11 +30,13 @@ const Dashboard = () => {
             context: formData.context,
             createdAt: new Date().toISOString()
         }
-        setChatbots([...chatbots, newChatbot])
+        setChatbots([...chatbots, newChatbot]);
+        await createChatbot({ name: formData.name, context: formData.context, token: getToken() })
         setFormData({ name: '', context: '' })
     }
-    const handleOpenChat = (chatbotId) => {
-        router.push(`/chat/${chatbotId}`)
+    const handleOpenChat = (chatbot) => {
+        const encodedName = encodeURIComponent(chatbot.name)
+        router.push(`/chatbot/${encodedName}`)
     }
     if (!isLoggedIn) {
         return (
@@ -46,7 +50,6 @@ const Dashboard = () => {
             <div className="dashboard">
                 <div className="dashboardHeader">
                     <h1>Dashboard</h1>
-                    
                 </div>
                 <div className="dashboardContent">
                     <div className="createChatbotSection">
@@ -87,10 +90,10 @@ const Dashboard = () => {
                                             Created: {new Date(chatbot.createdAt).toLocaleDateString()}
                                         </p>
                                         <button
-                                            onClick={() => handleOpenChat(chatbot.id)}
+                                            onClick={() => handleOpenChat(chatbot)}
                                             className="openChatButton"
                                         >
-                                            Visit
+                                            Open Chat
                                         </button>
                                     </div>
                                 ))}

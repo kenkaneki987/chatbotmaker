@@ -1,78 +1,172 @@
 "use client";
-import Link from "next/link";
-import React from "react";
-import { useState } from "react";
-import { login } from "@/services/auth";
+import React, { useState, useContext } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { login } from '@/services/auth';
+import { AuthContext } from '@/context/auth';
+import './page.css';
 
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const router = useRouter();
+  const { setIsLoggedIn } = useContext(AuthContext);
 
-const Page = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-  function handleChange(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const fieldName = e.target.name;
-    const fieldValue = e.target.value;
-    setForm({
-      ...form,
-      [fieldName]: fieldValue,
-    });
-  }
-  const handleSubmit = async(e) => {
-    e.preventDefault();
-    // console.log(form);
-    // login(form)
-    //   .then((response) => {
-    //     console.log(response);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    const response = await login({
-      email: form.email,
-      password: form.password,
-
-    });
-    localStorage.setItem("token",response.token)
-
+    setError('');
+    setSuccessMessage('');
+    setIsLoading(true);
 
     try {
       const response = await login({
-        email: form.email,
-        password: form.password,
+        email,
+        password,
       });
-      console.log(response);
+
+      // If no response or invalid response structure
+      if (!response || typeof response !== 'object') {
+        setError(
+          <div>
+            Hey there! 👋<br />
+            We don't have an account with {email} yet. No worries though!<br />
+            <Link href="/auth/signup" className="auth-link">
+              Click here to create your account
+            </Link>
+          </div>
+        );
+        return;
+      }
+
+      // Handle error responses
+      if (response.err) {
+        if (response.err === "User does not exists") {
+          setError(
+            <div>
+              Hey there! 👋<br />
+              We don't have an account with {email} yet. No worries though!<br />
+              <Link href="/auth/signup" className="auth-link">
+                Click here to create your account
+              </Link>
+            </div>
+          );
+        } else if (response.err === "Password does not match") {
+          setError(
+            <div>
+              Hmm, that password doesn't seem right for {email} 🤔<br />
+              <Link href="/auth/forgot-password" className="auth-link">
+                Forgot your password? Click here to reset it
+              </Link>
+            </div>
+          );
+        } else {
+          setError(response.err);
+        }
+        return;
+      }
+
+      // Check for token
+      if (!response.token) {
+        setError(
+          <div>
+            Hey there! 👋<br />
+            We don't have an account with {email} yet. No worries though!<br />
+            <Link href="/auth/signup" className="auth-link">
+              Click here to create your account
+            </Link>
+          </div>
+        );
+        return;
+      }
+
+      // Successful login
+      localStorage.setItem("token", response.token);
+      setIsLoggedIn(true);
+      
+      // Show welcome message
+      setSuccessMessage(
+        <div className="auth-success">
+          Welcome back! 🎉<br />
+          Redirecting you to your dashboard...
+        </div>
+      );
+
+      // Wait for 1.5 seconds to show the welcome message before redirecting
+      setTimeout(() => {
+        router.push('/dashboard');
+      }, 1500);
+
     } catch (err) {
-      console.log(err);
-      alert(err);
+      console.error('Login error:', err);
+      setError(
+        <div>
+          Hey there! 👋<br />
+          We don't have an account with {email} yet. No worries though!<br />
+          <Link href="/auth/signup" className="auth-link">
+            Click here to create your account
+          </Link>
+        </div>
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
+
   return (
-    <div>
-      <h1 className="login-heading">Login Page</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="email"
-          name="email"
-          value={form.email}
-          onChange={handleChange}
-        ></input>
-        <input
-          type="password"
-          placeholder="password"
-          name="password"
-          value={form.password}
-          onChange={handleChange}
-        ></input>
-        <button type="submit">Submit</button>
-      </form>
-      <p>
-        Dont have an account? <Link href="/auth/signup">Signup</Link>
-      </p>
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <h1>Welcome Back</h1>
+          <p>Sign in to your account to continue</p>
+        </div>
+
+        {error && <div className="auth-error">{error}</div>}
+        {successMessage && <div className="auth-success">{successMessage}</div>}
+
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <button type="submit" className="auth-button" disabled={isLoading}>
+            {isLoading ? 'Signing in...' : 'Sign In'}
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          <p>
+            Don't have an account?{' '}
+            <Link href="/auth/signup" className="auth-link">
+              Sign up
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Page;
+export default Login;
