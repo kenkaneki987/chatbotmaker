@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import "./navbar_holder/navbar.css"
 import { AuthContext } from '@/context/auth';
 import { destroyToken } from '@/helpers/auth';
+import { useTheme } from '@/context/theme';
 
 const Navbar = () => {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isDarkMode, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
@@ -63,7 +65,14 @@ const Navbar = () => {
             <Link href="/auth/signup" className="nav-button signup">Sign Up</Link>
           </>
         )}
-    </div>
+        <button 
+          onClick={toggleTheme} 
+          className="nav-button theme-toggle"
+          aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {isDarkMode ? '🌙' : '☀️'}
+        </button>
+      </div>
     </div>
   );
 };

@@ -266,5 +266,15 @@
     "name": "gemini",
     "context": "you are google chatbot",
     "creator": "kushpuri321@gmail.com"
+  },
+  {
+    "name": "maths teacher",
+    "context": "you are a maths teacher bla bla",
+    "creator": "kushpuri321@gmail.com"
+  },
+  {
+    "name": "Ravi Sharma",
+    "context": "dd",
+    "creator": "kushpuri321@gmail.com"
   }
 ]
