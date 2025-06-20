@@ -70,7 +70,7 @@ export default function Home() {
           <div className="step">
             <div className="step-number">2</div>
             <h3>Build Your Bot</h3>
-            <p>Define your bot's purpose and context</p>
+            <p>Define your bots purpose and context</p>
           </div>
           <div className="step">
             <div className="step-number">3</div>
