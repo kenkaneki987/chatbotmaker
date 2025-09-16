@@ -5,7 +5,7 @@ export async function POST(req) {
     const authHeader = req.headers.get("authorization");
     const accessToken = authHeader?.split(" ")[1];
 
-    if (!accessToken || !verifyToken(accessToken)) {
+    if (!accessToken || !(await verifyToken(accessToken))) {
       return new Response(JSON.stringify({ err: "Unauthorized" }), {
         status: 401,
         headers: { "Content-Type": "application/json" },

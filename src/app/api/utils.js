@@ -21,6 +21,13 @@ export const verifyToken = async (token) => {
   const tokens = await getData(file);
   return tokens.includes(token);
 };
+
+export const registerToken = async (email) => {
+  const token = new Date().toISOString() + "#@#" + email;
+  const file = path.join(dbAddress, "tokenRegistry.json");
+  await postData(file, token);
+  return token;
+};
 export const createChatbot = async ({ name, context, email }) => {
   const filePath = path.join(dbAddress, "chatbots.json");
   const data = await getData(filePath);
@@ -53,4 +60,31 @@ export const getChatbotByName = async (name) => {
   const filePath = path.join(dbAddress, "chatbots.json");
   const data = await getData(filePath);
   return data.find((chatbot) => chatbot.name === name);
+};
+
+// Messages persistence
+// Schema: { id, chatbotName, userEmail, role: "user"|"bot", text, createdAt }
+const messagesFile = () => path.join(dbAddress, "messages.json");
+
+export const getMessages = async ({ chatbotName, userEmail }) => {
+  const data = await getData(messagesFile());
+  return data.filter(
+    (m) => m.chatbotName === chatbotName && m.userEmail === userEmail
+  );
+};
+
+export const addMessage = async ({ chatbotName, userEmail, role, text }) => {
+  const filePath = messagesFile();
+  const data = await getData(filePath);
+  const entry = {
+    id: Date.now(),
+    chatbotName,
+    userEmail,
+    role,
+    text,
+    createdAt: new Date().toISOString(),
+  };
+  data.push(entry);
+  await putData(filePath, data);
+  return entry;
 };

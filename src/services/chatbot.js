@@ -33,3 +33,19 @@ export const createChatbot = async({name,context,token}) =>{
       return response;
 }
 
+
+export const getChatbotByName = async ({ token, name }) => {
+    const response = await fetch(`/api/chatbot/getByChatbotName?name=${encodeURIComponent(name)}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    })
+    if (!response.ok) {
+        const { err } = await response.json()
+        throw new Error(err || "Error getting chatbot by name")
+    }
+    return response.json()
+}
+

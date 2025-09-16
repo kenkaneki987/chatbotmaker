@@ -2,9 +2,11 @@
 import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { login } from '@/services/auth';
+import { login, socialLogin } from '@/services/auth';
 import { AuthContext } from '@/context/auth';
 import './page.css';
+import { auth, googleProvider } from '@/firebase';
+import { signInWithPopup } from 'firebase/auth';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -115,6 +117,23 @@ const Login = () => {
     }
   };
 
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      const email = user?.email;
+      if (!email) return;
+      const reg = await socialLogin({ email });
+      if (reg?.token) {
+        localStorage.setItem("token", reg.token);
+        setIsLoggedIn(true);
+        router.push('/dashboard');
+      }
+    } catch (err) {
+      console.error('Google sign-in failed', err);
+    }
+  }
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -163,6 +182,11 @@ const Login = () => {
               Sign up
             </Link>
           </p>
+          <div style={{ marginTop: '12px' }}>
+            <button type="button" className="auth-button" onClick={handleGoogleSignIn}>
+              Continue with Google
+            </button>
+          </div>
         </div>
       </div>
     </div>

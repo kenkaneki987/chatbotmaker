@@ -4,6 +4,8 @@ import { useParams } from "next/navigation"
 import { getChatbotByName } from "@/services/chatbot"
 import { getToken } from "@/helpers/auth"
 import { askGemini } from "@/services/ai"
+import { fetchMessages, addMessageApi } from "@/services/messages"
+import "./page.css"
 
 export default function Page() {
   const { name: ChatBotName } = useParams()
@@ -14,17 +16,53 @@ export default function Page() {
   const [isTyping, setIsTyping] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const messagesEndRef = useRef(null)
+  const storageKeyRef = useRef("")
 
   useEffect(() => {
     if (!ChatBotName) return
     const token = getToken()
-    getChatbotByName({ token, name: ChatBotName }).then((data) => {
-      setBotDetails({ name: data.name, context: data.context })
-    })
+    getChatbotByName({ token, name: ChatBotName })
+      .then((data) => {
+        if (data?.name) {
+          setBotDetails({ name: data.name, context: data.context || "" })
+          storageKeyRef.current = `chat_history:${data.name}`
+          try {
+            const saved = localStorage.getItem(storageKeyRef.current)
+            if (saved) {
+              const parsed = JSON.parse(saved)
+              if (Array.isArray(parsed)) {
+                setChatHistory(parsed)
+              }
+            }
+          } catch {}
+          // Fetch server history for this user + chatbot
+          if (token) {
+            fetchMessages({ token, chatbotName: data.name })
+              .then((serverMsgs) => {
+                if (Array.isArray(serverMsgs) && serverMsgs.length) {
+                  const mapped = serverMsgs.map((m) => ({ role: m.role === "user" ? "You" : "Bot", text: m.text }))
+                  setChatHistory(mapped)
+                }
+              })
+              .catch(() => {})
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to load chatbot:", err)
+      })
   }, [ChatBotName])
 
   useEffect(() => {
     messagesEndRef?.current?.scrollIntoView({ behavior: "smooth" })
+  }, [chatHistory])
+
+  // Persist chat history whenever it changes
+  useEffect(() => {
+    if (!storageKeyRef.current) return
+    try {
+      localStorage.setItem(storageKeyRef.current, JSON.stringify(chatHistory))
+    } catch {}
   }, [chatHistory])
 
   const handleSend = async() => {
@@ -38,14 +76,22 @@ export default function Page() {
     setMessage("")
     
     try {
+      // Save user message to server
+      const token = getToken()
+      if (token && botDetails.name) {
+        addMessageApi({ token, chatbotName: botDetails.name, role: "user", text: userMessage }).catch(() => {})
+      }
       const response = await askGemini({
-        text: botDetails.name,
+        text: userMessage,
         context: botDetails.context,
       })
       const data = await response.json()
-      const botMessage = data.response.candidates[0].content.parts[0].text
-      
-      setChatHistory(prev => [...prev, { role: "Bot", text: botMessage }])
+      const botMessage = data?.response?.candidates?.[0]?.content?.parts?.[0]?.text || ""
+      setChatHistory(prev => [...prev, { role: "Bot", text: botMessage || "Sorry, I couldn't generate a response." }])
+      // Save bot message to server
+      if (token && botDetails.name) {
+        addMessageApi({ token, chatbotName: botDetails.name, role: "bot", text: botMessage }).catch(() => {})
+      }
     } catch (error) {
       console.error("Error getting response:", error)
       setChatHistory(prev => [...prev, { role: "Bot", text: "Sorry, I encountered an error. Please try again." }])
