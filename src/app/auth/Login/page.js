@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -34,7 +35,7 @@ const Login = () => {
         setError(
           <div>
             Hey there! 👋<br />
-            We don't have an account with {email} yet. No worries though!<br />
+            We don&#39;t have an account with {email} yet. No worries though!<br />
             <Link href="/auth/signup" className="auth-link">
               Click here to create your account
             </Link>
@@ -49,7 +50,7 @@ const Login = () => {
           setError(
             <div>
               Hey there! 👋<br />
-              We don't have an account with {email} yet. No worries though!<br />
+              We don&#39;t have an account with {email} yet. No worries though!<br />
               <Link href="/auth/signup" className="auth-link">
                 Click here to create your account
               </Link>
@@ -58,7 +59,7 @@ const Login = () => {
         } else if (response.err === "Password does not match") {
           setError(
             <div>
-              Hmm, that password doesn't seem right for {email} 🤔<br />
+              Hmm, that password doesn&#39;t seem right for {email} 🤔<br />
               <Link href="/auth/forgot-password" className="auth-link">
                 Forgot your password? Click here to reset it
               </Link>
@@ -75,7 +76,7 @@ const Login = () => {
         setError(
           <div>
             Hey there! 👋<br />
-            We don't have an account with {email} yet. No worries though!<br />
+            We don&#39;t have an account with {email} yet. No worries though!<br />
             <Link href="/auth/signup" className="auth-link">
               Click here to create your account
             </Link>
@@ -177,7 +178,7 @@ const Login = () => {
 
         <div className="auth-footer">
           <p>
-            Don't have an account?{' '}
+            Don&#39;t have an account?{' '}
             <Link href="/auth/signup" className="auth-link">
               Sign up
             </Link>
