@@ -1,12 +1,24 @@
 // In-memory storage for deployment environments where file system is read-only
 // This is a temporary solution until you migrate to a proper database
 
-let memoryStore = {
-  users: [],
-  tokens: [],
-  chatbots: [],
-  messages: []
+// Try to load from process.env for persistence across deployments
+const loadPersistentData = () => {
+  try {
+    if (process.env.MEMORY_STORE_DATA) {
+      return JSON.parse(process.env.MEMORY_STORE_DATA);
+    }
+  } catch (error) {
+    console.warn('Failed to load persistent data:', error);
+  }
+  return {
+    users: [],
+    tokens: [],
+    chatbots: [],
+    messages: []
+  };
 };
+
+let memoryStore = loadPersistentData();
 
 export const getMemoryData = (collection) => {
   return memoryStore[collection] || [];

@@ -46,10 +46,15 @@ export default function Page() {
               })
               .catch(() => {})
           }
+        } else {
+          console.warn("Chatbot data is invalid or missing name");
+          setBotDetails({ name: ChatBotName, context: "" })
         }
       })
       .catch((err) => {
-        console.error("Failed to load chatbot:", err)
+        console.error("Failed to load chatbot:", err);
+        // Set fallback data so user can still use the chat
+        setBotDetails({ name: ChatBotName, context: "" })
       })
   }, [ChatBotName])
 

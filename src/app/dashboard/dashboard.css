@@ -207,23 +207,51 @@ body {
     margin-bottom: 1rem;
   }
   
-  /* Open Chat Button */
-  .openChatButton {
-    width: 100%;
-    padding: 0.75rem;
-    background: var(--primary);
-    color: var(--primary-foreground);
+  /* Chatbot Actions */
+  .chatbotActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  /* Action Buttons */
+  .openChatButton, .editChatbotButton, .deleteChatbotButton {
+    padding: 0.5rem 1rem;
     border: none;
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background 0.3s, color 0.3s;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+  }
+
+  .openChatButton {
+    background: var(--primary);
+    color: var(--primary-foreground);
   }
   
   .openChatButton:hover {
     background: var(--accent);
     color: var(--accent-foreground);
+  }
+
+  .editChatbotButton {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+  
+  .editChatbotButton:hover {
+    background: var(--secondary-hover, #e5e7eb);
+  }
+
+  .deleteChatbotButton {
+    background: #ef4444;
+    color: white;
+  }
+  
+  .deleteChatbotButton:hover {
+    background: #dc2626;
   }
   
   /* Not Logged In */
