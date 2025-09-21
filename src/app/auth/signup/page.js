@@ -2,9 +2,11 @@
 import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { signup, login } from '@/services/auth';
+import { signup, login, socialLogin } from '@/services/auth';
 import { AuthContext } from '@/context/auth';
 import './page.css';
+import { auth, googleProvider } from '@/firebase';
+import { signInWithPopup } from 'firebase/auth';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,7 @@ const Signup = () => {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const router = useRouter();
   const { setIsLoggedIn } = useContext(AuthContext);
 
@@ -60,6 +63,58 @@ const Signup = () => {
       setError(err.message || 'Signup failed');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setIsGoogleLoading(true);
+    
+    try {
+      // Check if Firebase is properly configured
+      if (!auth || !googleProvider) {
+        throw new Error('Firebase authentication is not properly configured');
+      }
+
+      const result = await signInWithPopup(auth, googleProvider);
+      const user = result.user;
+      const email = user?.email;
+      
+      if (!email) {
+        throw new Error('No email found in Google account');
+      }
+
+      // Register/login user with our backend
+      const reg = await socialLogin({ email });
+      
+      if (reg?.token) {
+        localStorage.setItem("token", reg.token);
+        setIsLoggedIn(true);
+        
+        // Redirect to dashboard
+        router.push('/dashboard');
+      } else {
+        throw new Error('Failed to create user session');
+      }
+    } catch (err) {
+      console.error('Google sign-in failed:', err);
+      
+      let errorMessage = 'Google sign-in failed. Please try again.';
+      
+      // Handle specific Firebase errors
+      if (err.code === 'auth/popup-closed-by-user') {
+        errorMessage = 'Sign-in was cancelled. Please try again.';
+      } else if (err.code === 'auth/popup-blocked') {
+        errorMessage = 'Popup was blocked by browser. Please allow popups and try again.';
+      } else if (err.code === 'auth/network-request-failed') {
+        errorMessage = 'Network error. Please check your connection and try again.';
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
+    } finally {
+      setIsGoogleLoading(false);
     }
   };
 
@@ -138,6 +193,16 @@ const Signup = () => {
               Sign in
             </Link>
           </p>
+          <div style={{ marginTop: '12px' }}>
+            <button 
+              type="button" 
+              className="auth-button" 
+              onClick={handleGoogleSignIn}
+              disabled={isGoogleLoading || isLoading}
+            >
+              {isGoogleLoading ? 'Signing up with Google...' : 'Continue with Google'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
