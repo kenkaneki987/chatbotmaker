@@ -174,5 +174,37 @@
     "role": "bot",
     "text": "The user input \"2\" isn't in the context of the provided chatbot flow.  The chatbot is expecting button clicks or numerical input within the addition or subtraction flows.  Therefore, there's no defined response for a lone \"2\" input.  The chatbot would likely either:\n\n* **Ignore the input:**  The chatbot would remain on the main menu, waiting for a valid button press (\"Addition\" or \"Subtraction\").\n\n* **Treat it as an error:**  The chatbot might respond with something like, \"Oops! I didn't understand that input. Please select an option from the menu.\"  This would be a more user-friendly approach.\n\n\nTo make the chatbot more robust, you could add error handling for unexpected input types at the main menu stage.\n",
     "createdAt": "2025-09-21T07:02:33.619Z"
+  },
+  {
+    "id": 1758438243212,
+    "chatbotName": "mathemate",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "user",
+    "text": "hi ",
+    "createdAt": "2025-09-21T07:04:03.212Z"
+  },
+  {
+    "id": 1758438245610,
+    "chatbotName": "mathemate",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "bot",
+    "text": "Hi there! 👋 I'm Mathemate, your friendly math assistant. I can help you with basic addition and subtraction.\n\nWhat would you like to do? Please choose an option:\n\n[Button: Addition]\n[Button: Subtraction]\n",
+    "createdAt": "2025-09-21T07:04:05.610Z"
+  },
+  {
+    "id": 1758438286035,
+    "chatbotName": "cat",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "user",
+    "text": "hi",
+    "createdAt": "2025-09-21T07:04:46.035Z"
+  },
+  {
+    "id": 1758438287904,
+    "chatbotName": "cat",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "bot",
+    "text": "Meow?\n",
+    "createdAt": "2025-09-21T07:04:47.904Z"
   }
 ]

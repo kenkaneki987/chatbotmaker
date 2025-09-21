@@ -1,6 +1,6 @@
 import path from "path";
 
-import { getData, postData } from "@/app/api/utils";
+import { getData, postData, registerToken } from "@/app/api/utils";
 import dbAddress from "@/db";
 
 const filePath = path.join(dbAddress, "users.json");
@@ -41,9 +41,3 @@ export async function POST(req) {
   }
 }
 
-const registerToken = async (email) => {
-  const token = new Date().toISOString() + "#@#" + email;
-  const file = path.join(dbAddress, "tokenRegistry.json");
-  await postData(file, token);
-  return token;
-};

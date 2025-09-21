@@ -6,10 +6,11 @@ export const signup = async ({ email, password }) => {
     body: JSON.stringify({ email, password }),
     method: "POST",
   });
+  const data = await response.json();
   if (!response.ok) {
-  } else {
-    return await response.json();
+    throw new Error(data.message || data.err || 'Signup failed');
   }
+  return data;
 };
 
 
@@ -22,10 +23,11 @@ export const login = async ({ email, password }) => {
     body: JSON.stringify({ email, password }),
     method: "POST",
   });
+  const data = await response.json();
   if (!response.ok) {
-  } else {
-    return await response.json();
+    throw new Error(data.err || data.message || 'Login failed');
   }
+  return data;
 };
 
 export const socialLogin = async ({ email }) => {
@@ -36,8 +38,9 @@ export const socialLogin = async ({ email }) => {
     body: JSON.stringify({ email }),
     method: "POST",
   });
+  const data = await response.json();
   if (!response.ok) {
-  } else {
-    return await response.json();
+    throw new Error(data.err || data.message || 'Social login failed');
   }
+  return data;
 };

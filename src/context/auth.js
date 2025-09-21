@@ -1,5 +1,5 @@
 "use client"
-import { isUserLoggedIn } from "@/helpers/auth";
+import { isUserLoggedIn, destroyToken } from "@/helpers/auth";
 import { useState, createContext, useEffect } from "react";
 
 export const AuthContext = createContext(null);
@@ -21,10 +21,16 @@ const AuthProvider = ({ children }) => {
     return () => window.removeEventListener('storage', checkLoginStatus);
   }, []);
 
+  const logout = () => {
+    destroyToken();
+    setIsLoggedIn(false);
+  };
+
   // During server-side rendering, provide a default context value
   const contextValue = {
     isLoggedIn: mounted ? isLoggedIn : false,
     setIsLoggedIn: mounted ? setIsLoggedIn : () => {},
+    logout: mounted ? logout : () => {},
   };
 
   return (
