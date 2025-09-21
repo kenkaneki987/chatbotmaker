@@ -126,5 +126,53 @@
     "role": "bot",
     "text": "Bhow bhow?  Bhow!\n",
     "createdAt": "2025-09-18T09:43:10.698Z"
+  },
+  {
+    "id": 1758438133901,
+    "chatbotName": "mathemate",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "user",
+    "text": "hi ",
+    "createdAt": "2025-09-21T07:02:13.901Z"
+  },
+  {
+    "id": 1758438136072,
+    "chatbotName": "mathemate",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "bot",
+    "text": "Hi there! 👋 I'm Mathemate, your friendly math assistant. I can help you with basic addition and subtraction.\n\nWhat would you like to do? Please choose an option:\n\n[Button: Addition]\n[Button: Subtraction]\n",
+    "createdAt": "2025-09-21T07:02:16.072Z"
+  },
+  {
+    "id": 1758438144934,
+    "chatbotName": "mathemate",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "user",
+    "text": "addition ",
+    "createdAt": "2025-09-21T07:02:24.934Z"
+  },
+  {
+    "id": 1758438146089,
+    "chatbotName": "mathemate",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "bot",
+    "text": "Okay, following the provided content, the chatbot would respond as follows:\n\n**Chatbot:** \"Great, let's add! What's the first number?\"\n",
+    "createdAt": "2025-09-21T07:02:26.089Z"
+  },
+  {
+    "id": 1758438150168,
+    "chatbotName": "mathemate",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "user",
+    "text": "2",
+    "createdAt": "2025-09-21T07:02:30.168Z"
+  },
+  {
+    "id": 1758438153619,
+    "chatbotName": "mathemate",
+    "userEmail": "kushpuri321@gmail.com",
+    "role": "bot",
+    "text": "The user input \"2\" isn't in the context of the provided chatbot flow.  The chatbot is expecting button clicks or numerical input within the addition or subtraction flows.  Therefore, there's no defined response for a lone \"2\" input.  The chatbot would likely either:\n\n* **Ignore the input:**  The chatbot would remain on the main menu, waiting for a valid button press (\"Addition\" or \"Subtraction\").\n\n* **Treat it as an error:**  The chatbot might respond with something like, \"Oops! I didn't understand that input. Please select an option from the menu.\"  This would be a more user-friendly approach.\n\n\nTo make the chatbot more robust, you could add error handling for unexpected input types at the main menu stage.\n",
+    "createdAt": "2025-09-21T07:02:33.619Z"
   }
 ]
