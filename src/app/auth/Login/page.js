@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { login, socialLogin } from '@/services/auth';
 import { AuthContext } from '@/context/auth';
+import { WaveIcon, PartyIcon, ThinkingIcon, UserIcon } from '@/components/Icons';
 import './page.css';
 import { auth, googleProvider } from '@/firebase';
 import { signInWithPopup } from 'firebase/auth';
@@ -34,12 +35,15 @@ const Login = () => {
       // If no response or invalid response structure
       if (!response || typeof response !== 'object') {
         setError(
-          <div>
-            Hey there! 👋<br />
-            We don&#39;t have an account with {email} yet. No worries though!<br />
-            <Link href="/auth/signup" className="auth-link">
-              Click here to create your account
-            </Link>
+          <div className="error-message-with-icon">
+            <WaveIcon size={20} />
+            <div>
+              Hey there!<br />
+              We don&#39;t have an account with {email} yet. No worries though!<br />
+              <Link href="/auth/signup" className="auth-link">
+                Click here to create your account
+              </Link>
+            </div>
           </div>
         );
         return;
@@ -49,21 +53,27 @@ const Login = () => {
       if (response.err) {
         if (response.err === "User does not exists") {
           setError(
-            <div>
-              Hey there! 👋<br />
-              We don&#39;t have an account with {email} yet. No worries though!<br />
-              <Link href="/auth/signup" className="auth-link">
-                Click here to create your account
-              </Link>
+            <div className="error-message-with-icon">
+              <WaveIcon size={20} />
+              <div>
+                Hey there!<br />
+                We don&#39;t have an account with {email} yet. No worries though!<br />
+                <Link href="/auth/signup" className="auth-link">
+                  Click here to create your account
+                </Link>
+              </div>
             </div>
           );
         } else if (response.err === "Password does not match") {
           setError(
-            <div>
-              Hmm, that password doesn&#39;t seem right for {email} 🤔<br />
-              <Link href="/auth/forgot-password" className="auth-link">
-                Forgot your password? Click here to reset it
-              </Link>
+            <div className="error-message-with-icon">
+              <ThinkingIcon size={20} />
+              <div>
+                Hmm, that password doesn&#39;t seem right for {email}<br />
+                <Link href="/auth/forgot-password" className="auth-link">
+                  Forgot your password? Click here to reset it
+                </Link>
+              </div>
             </div>
           );
         } else {
@@ -75,12 +85,15 @@ const Login = () => {
       // Check for token
       if (!response.token) {
         setError(
-          <div>
-            Hey there! 👋<br />
-            We don&#39;t have an account with {email} yet. No worries though!<br />
-            <Link href="/auth/signup" className="auth-link">
-              Click here to create your account
-            </Link>
+          <div className="error-message-with-icon">
+            <WaveIcon size={20} />
+            <div>
+              Hey there!<br />
+              We don&#39;t have an account with {email} yet. No worries though!<br />
+              <Link href="/auth/signup" className="auth-link">
+                Click here to create your account
+              </Link>
+            </div>
           </div>
         );
         return;
@@ -93,8 +106,11 @@ const Login = () => {
       // Show welcome message
       setSuccessMessage(
         <div className="auth-success">
-          Welcome back! 🎉<br />
-          Redirecting you to your dashboard...
+          <PartyIcon size={20} />
+          <div>
+            Welcome back!<br />
+            Redirecting you to your dashboard...
+          </div>
         </div>
       );
 
@@ -106,12 +122,15 @@ const Login = () => {
     } catch (err) {
       console.error('Login error:', err);
       setError(
-        <div>
-          Hey there! 👋<br />
-          We don't have an account with {email} yet. No worries though!<br />
-          <Link href="/auth/signup" className="auth-link">
-            Click here to create your account
-          </Link>
+        <div className="error-message-with-icon">
+          <WaveIcon size={20} />
+          <div>
+            Hey there!<br />
+            We don't have an account with {email} yet. No worries though!<br />
+            <Link href="/auth/signup" className="auth-link">
+              Click here to create your account
+            </Link>
+          </div>
         </div>
       );
     } finally {
@@ -147,8 +166,11 @@ const Login = () => {
         
         setSuccessMessage(
           <div className="auth-success">
-            Welcome! 🎉<br />
-            Redirecting you to your dashboard...
+            <PartyIcon size={20} />
+            <div>
+              Welcome!<br />
+              Redirecting you to your dashboard...
+            </div>
           </div>
         );
 

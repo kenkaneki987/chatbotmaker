@@ -497,4 +497,55 @@ html {
 
 .dark .auth-link:hover {
   color: var(--primary);
-} 
+}
+
+/* Icon message styles */
+.error-message-with-icon,
+.auth-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.error-message-with-icon svg,
+.auth-success svg {
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  color: currentColor;
+}
+
+.error-message-with-icon > div,
+.auth-success > div {
+  flex: 1;
+  line-height: 1.5;
+}
+
+.auth-success {
+  color: var(--success, #10b981);
+}
+
+.auth-success svg {
+  color: var(--success, #10b981);
+}
+
+/* Feature icon styles for home page */
+.feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  color: var(--primary);
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1);
+  color: var(--accent);
+}
+
+.feature-icon svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}

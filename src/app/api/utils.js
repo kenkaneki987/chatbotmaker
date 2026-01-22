@@ -69,9 +69,12 @@ export const putData = async (filePath, data) => {
 
 export const verifyToken = async (token) => {
   try {
+    console.log("Verifying token:", token?.substring(0, 30) + "..."); // Log first 30 chars
     const file = path.join(dbAddress, "tokenRegistry.json");
     const tokens = await getData(file);
-    return Array.isArray(tokens) && tokens.includes(token);
+    const isValid = Array.isArray(tokens) && tokens.includes(token);
+    console.log("Token valid:", isValid, "| Total tokens in registry:", tokens?.length);
+    return isValid;
   } catch (error) {
     console.warn("Token verification failed, checking memory storage:", error.message);
     // Fall back to memory storage
@@ -80,6 +83,7 @@ export const verifyToken = async (token) => {
     
     // If not in memory and token format is valid, allow access (for deployment)
     if (!isValid && token && typeof token === 'string' && token.includes('#@#')) {
+      console.log("Allowing token with valid format for deployment mode");
       return true;
     }
     

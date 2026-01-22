@@ -3,6 +3,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useContext } from 'react';
 import { AuthContext } from '@/context/auth';
+import { RocketIcon, BotIcon, SettingsIcon, LockIcon } from '@/components/Icons';
 import './page.css';
 
 const About = () => {
@@ -35,22 +36,30 @@ const About = () => {
         <h2>Key Features</h2>
         <div className="about-features-grid">
           <div className="about-feature-card">
-            <div className="about-feature-icon">🚀</div>
+            <div className="about-feature-icon">
+              <RocketIcon size={40} />
+            </div>
             <h3>Easy to Use</h3>
             <p>Create and deploy your chatbot in minutes with our intuitive interface</p>
           </div>
           <div className="about-feature-card">
-            <div className="about-feature-icon">🤖</div>
+            <div className="about-feature-icon">
+              <BotIcon size={40} />
+            </div>
             <h3>AI-Powered</h3>
             <p>Leverage advanced AI technology for intelligent and contextual responses</p>
           </div>
           <div className="about-feature-card">
-            <div className="about-feature-icon">🛠️</div>
+            <div className="about-feature-icon">
+              <SettingsIcon size={40} />
+            </div>
             <h3>Customizable</h3>
             <p>Tailor your chatbot to your specific needs and use cases</p>
           </div>
           <div className="about-feature-card">
-            <div className="about-feature-icon">🔒</div>
+            <div className="about-feature-icon">
+              <LockIcon size={40} />
+            </div>
             <h3>Secure</h3>
             <p>Enterprise-grade security to protect your data and conversations</p>
           </div>

@@ -90,8 +90,8 @@ export default function Page() {
         text: userMessage,
         context: botDetails.context,
       })
-      const data = await response.json()
-      const botMessage = data?.response?.candidates?.[0]?.content?.parts?.[0]?.text || ""
+      // askGemini already returns parsed JSON, no need to call .json()
+      const botMessage = response?.response?.candidates?.[0]?.content?.parts?.[0]?.text || ""
       setChatHistory(prev => [...prev, { role: "Bot", text: botMessage || "Sorry, I couldn't generate a response." }])
       // Save bot message to server
       if (token && botDetails.name) {
